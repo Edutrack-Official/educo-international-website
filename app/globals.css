@@ -1,0 +1,467 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+/* ---------------------------------------------------------------
+   Educo design tokens
+
+   Light (default): ivory paper, royal navy ink, antique gold.
+   Dark: midnight navy with bright gold.
+   Components only ever use the semantic names below.
+   --------------------------------------------------------------- */
+:root {
+  color-scheme: light;
+
+  --bg: #f7f3ea;
+  --surface: #fffdf8;
+  --surface-2: #efe8d8;
+  --fg: #0c1430;
+  --accent: #1c2d78;
+  --accent-2: #3d5ad6;
+  --accent-ink: #ffffff;
+  --gold: #a87b22;
+  --gold-2: #d9b25e;
+  --gold-ink: #0c1430;
+
+  --shadow-card-v: 0 1px 2px rgb(12 20 48 / 0.04), 0 16px 36px -18px rgb(12 20 48 / 0.2);
+  --shadow-lift-v: 0 2px 4px rgb(12 20 48 / 0.05), 0 34px 64px -26px rgb(28 45 120 / 0.38);
+
+  /* Midnight "islands" inside the light page (hero, test lab, footer) */
+  --island-bg: #070c22;
+  --island-surface-solid: #10173a;
+  --island-accent: #e6c77d;
+  --island-accent-2: #f6e3b0;
+  --island-accent-ink: #070c22;
+}
+
+[data-theme="dark"] {
+  color-scheme: dark;
+
+  --bg: #060a1c;
+  --surface: #0e1533;
+  --surface-2: #151d42;
+  --fg: #f2efe6;
+  --accent: #e6c77d;
+  --accent-2: #f6e3b0;
+  --accent-ink: #060a1c;
+  --gold: #e6c77d;
+  --gold-2: #f6e3b0;
+  --gold-ink: #060a1c;
+
+  --shadow-card-v: 0 0 0 1px rgb(255 255 255 / 0.04), 0 18px 40px -20px rgb(0 0 0 / 0.75);
+  --shadow-lift-v: 0 0 0 1px rgb(230 199 125 / 0.2), 0 30px 70px -28px rgb(230 199 125 / 0.3);
+
+  --island-bg: #040716;
+  --island-surface-solid: #0c1230;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-fg: var(--fg);
+  --color-accent: var(--accent);
+  --color-accent-2: var(--accent-2);
+  --color-accent-ink: var(--accent-ink);
+  --color-gold: var(--gold);
+  --color-gold-2: var(--gold-2);
+  --color-gold-ink: var(--gold-ink);
+
+  --font-display: var(--font-fraunces), ui-serif, Georgia, serif;
+  --font-sans: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
+
+  --shadow-card: var(--shadow-card-v);
+  --shadow-lift: var(--shadow-lift-v);
+
+  --ease-out-expo: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ---------------------------------------------------------------
+   Keyframes
+   --------------------------------------------------------------- */
+@keyframes rise {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes word-up {
+  from { transform: translateY(110%); }
+  to { transform: translateY(0); }
+}
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes draw {
+  from { stroke-dashoffset: 1; }
+  to { stroke-dashoffset: 0; }
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-9px); }
+}
+@keyframes pulse-ring {
+  0% { transform: scale(0.6); opacity: 0.8; }
+  100% { transform: scale(2.6); opacity: 0; }
+}
+@keyframes drift {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(6%, -8%) scale(1.08); }
+  66% { transform: translate(-5%, 6%) scale(0.95); }
+}
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+@keyframes twinkle {
+  0%, 100% { opacity: 0.15; }
+  50% { opacity: 0.9; }
+}
+@keyframes dash-flow {
+  to { stroke-dashoffset: -1; }
+}
+
+/* ---------------------------------------------------------------
+   Base
+   --------------------------------------------------------------- */
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-padding-top: 5.5rem;
+  }
+
+  body {
+    background-color: var(--bg);
+    color: var(--fg);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+    transition: background-color 0.4s ease, color 0.4s ease;
+  }
+
+  ::selection {
+    background: color-mix(in oklab, var(--gold-2) 40%, transparent);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+}
+
+/* ---------------------------------------------------------------
+   Utilities
+   --------------------------------------------------------------- */
+@utility wrap {
+  margin-inline: auto;
+  width: 100%;
+  max-width: 80rem;
+  padding-inline: 1.25rem;
+  @media (width >= 40rem) {
+    padding-inline: 2rem;
+  }
+}
+
+/* Grand serif display type */
+@utility display {
+  font-family: var(--font-display);
+  font-optical-sizing: auto;
+  font-weight: 500;
+  letter-spacing: -0.025em;
+  line-height: 1;
+}
+
+@utility text-gold-gradient {
+  background-image: linear-gradient(100deg, var(--gold) 0%, var(--gold-2) 55%, var(--gold) 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+@utility bg-grid {
+  background-image:
+    linear-gradient(color-mix(in oklab, var(--fg) 6%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in oklab, var(--fg) 6%, transparent) 1px, transparent 1px);
+  background-size: 56px 56px;
+}
+
+@utility mask-fade {
+  mask-image: radial-gradient(ellipse at center, black 25%, transparent 72%);
+}
+
+/* A midnight block inside the page: re-points the tokens for everything inside */
+.island {
+  --bg: var(--island-bg);
+  --surface: var(--island-surface-solid);
+  --surface-2: color-mix(in oklab, var(--island-surface-solid) 80%, white 6%);
+  --fg: #f2efe6;
+  --accent: var(--island-accent);
+  --accent-2: var(--island-accent-2);
+  --accent-ink: var(--island-accent-ink);
+  --gold: var(--island-accent);
+  --gold-2: var(--island-accent-2);
+  --gold-ink: var(--island-accent-ink);
+  --shadow-card-v: 0 0 0 1px rgb(255 255 255 / 0.06);
+  --shadow-lift-v: 0 0 0 1px rgb(230 199 125 / 0.22), 0 30px 70px -28px rgb(230 199 125 / 0.32);
+  background-color: var(--bg);
+  color: var(--fg);
+}
+
+/* Film grain over the midnight blocks */
+.grain::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.07;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+
+/* --- Entrances: pure CSS so they never wait on hydration --- */
+.enter {
+  opacity: 0;
+  animation: rise 1s var(--ease-out-expo) forwards;
+  animation-delay: var(--d, 0s);
+}
+.enter-fade {
+  opacity: 0;
+  animation: fade-in 1.4s ease forwards;
+  animation-delay: var(--d, 0s);
+}
+.word-mask {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+  padding-bottom: 0.14em;
+  margin-bottom: -0.14em;
+}
+.word-mask > .word {
+  display: inline-block;
+  transform: translateY(110%);
+  animation: word-up 1.1s var(--ease-out-expo) forwards;
+  animation-delay: var(--d, 0s);
+}
+
+/* Opening curtain: a midnight panel with the crest, lifting away */
+@keyframes curtain-up {
+  0%, 55% { transform: translateY(0); }
+  100% { transform: translateY(-100%); }
+}
+@keyframes crest-in {
+  0% { opacity: 0; transform: scale(0.85); letter-spacing: 0.6em; }
+  40%, 70% { opacity: 1; transform: scale(1); letter-spacing: 0.32em; }
+  100% { opacity: 0; transform: scale(1); letter-spacing: 0.32em; }
+}
+.curtain {
+  animation: curtain-up 1.9s cubic-bezier(0.76, 0, 0.24, 1) forwards;
+}
+.curtain-crest {
+  animation: crest-in 1.5s var(--ease-out-expo) forwards;
+}
+
+/* SVG line work: paths carry pathLength="1" */
+.trace {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: draw 2s var(--ease-out-expo) forwards;
+  animation-delay: var(--d, 0s);
+}
+.flight {
+  stroke-dasharray: 0.012 0.018;
+  animation: dash-flow var(--t, 30s) linear infinite;
+}
+.float { animation: float var(--t, 6s) ease-in-out infinite; animation-delay: var(--d, 0s); }
+.drift { animation: drift var(--t, 18s) ease-in-out infinite; animation-delay: var(--d, 0s); }
+.spin-slow { animation: spin var(--t, 40s) linear infinite; }
+.spin-rev { animation: spin var(--t, 60s) linear infinite reverse; }
+.twinkle { animation: twinkle var(--t, 4s) ease-in-out infinite; animation-delay: var(--d, 0s); }
+.ring {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: pulse-ring 2.6s ease-out infinite;
+  animation-delay: var(--d, 0s);
+}
+
+/* Globe meridians turning: each ellipse breathes its width */
+@keyframes meridian {
+  0% { transform: scaleX(1); }
+  50% { transform: scaleX(-1); }
+  100% { transform: scaleX(1); }
+}
+.meridian {
+  transform-box: view-box;
+  transform-origin: 50% 50%;
+  animation: meridian var(--t, 12s) linear infinite;
+  animation-delay: var(--d, 0s);
+}
+
+/* Theme switch: the new theme grows out of the toggle button */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+::view-transition-new(root) {
+  animation: theme-reveal 0.6s cubic-bezier(0.65, 0, 0.35, 1);
+}
+@keyframes theme-reveal {
+  from { clip-path: circle(0 at var(--vt-x, 100%) var(--vt-y, 0)); }
+  to { clip-path: circle(150vmax at var(--vt-x, 100%) var(--vt-y, 0)); }
+}
+
+/* Gold light that runs around a card's edge */
+@property --angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+@keyframes border-spin {
+  to { --angle: 360deg; }
+}
+.glow-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1.5px;
+  background: conic-gradient(from var(--angle), transparent 0 55%, var(--gold-2) 70%, var(--gold) 82%, transparent 95%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+  animation: border-spin 4s linear infinite;
+  pointer-events: none;
+}
+
+/* Outlined numeral that fills with gold on hover */
+.num-fill {
+  color: transparent;
+  -webkit-text-stroke: 1.2px color-mix(in oklab, var(--fg) 18%, transparent);
+  background: linear-gradient(90deg, var(--gold), var(--gold-2)) no-repeat;
+  background-size: 0% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  transition: background-size 0.9s var(--ease-out-expo), -webkit-text-stroke-color 0.5s ease;
+}
+.group\/spot:hover .num-fill {
+  background-size: 100% 100%;
+  -webkit-text-stroke-color: transparent;
+}
+
+/* A light sweeping across gold text */
+@keyframes shine {
+  to { background-position: -200% 0; }
+}
+.shine {
+  background-image: linear-gradient(
+    100deg,
+    var(--gold) 0%,
+    var(--gold-2) 25%,
+    color-mix(in oklab, var(--gold-2) 40%, white) 35%,
+    var(--gold-2) 45%,
+    var(--gold) 70%,
+    var(--gold-2) 100%
+  );
+  background-size: 200% 100%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  animation: shine 6s linear infinite;
+}
+
+/* Microphone sound bars */
+@keyframes eq {
+  0%, 100% { transform: scaleY(0.35); }
+  50% { transform: scaleY(1); }
+}
+.eq {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: eq 1.1s ease-in-out infinite;
+  animation-delay: var(--d, 0s);
+}
+
+/* Plane icon bobbing on its route */
+@keyframes bob {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  50% { transform: translate(2px, -2px) rotate(-4deg); }
+}
+.bob { animation: bob 2.6s ease-in-out infinite; }
+
+/* Target icon: rings pulsing outward */
+@keyframes target-pulse {
+  0%, 100% { opacity: 0.35; transform: scale(0.92); }
+  50% { opacity: 1; transform: scale(1); }
+}
+.target-pulse {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: target-pulse 2.4s ease-in-out infinite;
+  animation-delay: var(--d, 0s);
+}
+
+/* Handwriting: letters writing themselves */
+.write {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: write-loop var(--t, 7s) ease-in-out infinite;
+  animation-delay: var(--d, 0s);
+}
+@keyframes write-loop {
+  0% { stroke-dashoffset: 1; }
+  35%, 80% { stroke-dashoffset: 0; }
+  95%, 100% { stroke-dashoffset: 0; opacity: 0; }
+}
+
+/* Handwriting on the young-learners tile: the word writes itself, then inks in */
+@keyframes write-text {
+  0% { stroke-dashoffset: 520; fill: transparent; }
+  55% { stroke-dashoffset: 0; fill: transparent; }
+  70%, 88% { stroke-dashoffset: 0; fill: var(--gold); }
+  100% { stroke-dashoffset: 0; fill: transparent; opacity: 0; }
+}
+.write-text {
+  stroke-dasharray: 520;
+  animation: write-text 6s ease-in-out infinite;
+}
+
+/* Flash card on the hero notebook: each new card pops in */
+@keyframes card-pop {
+  from { opacity: 0; transform: translateY(10px) scale(0.85); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+.hero-card {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: card-pop 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Kite icon swaying on the breeze */
+@keyframes kite {
+  0%, 100% { transform: rotate(-8deg) translateY(0); }
+  50% { transform: rotate(6deg) translateY(-1.5px); }
+}
+.kite {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  animation: kite 3s ease-in-out infinite;
+}
+
+/* Instagram-style story ring */
+.story-ring {
+  background: conic-gradient(from var(--angle), #f2b33d, #e4677a, #9b5de5, #3d8fd6, #f2b33d);
+  animation: border-spin 5s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-delay: 0s !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  .curtain { display: none; }
+  .write, .trace, .write-text { stroke-dashoffset: 0 !important; opacity: 1 !important; }
+  .write-text { fill: var(--gold); }
+}
