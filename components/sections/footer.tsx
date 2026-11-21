@@ -112,7 +112,6 @@ export function Footer() {
           <p>
             © {new Date().getFullYear()} {site.legalName}. All rights reserved.
           </p>
-          <p>Test formats are set by the exam bodies and may change; we&apos;ll always confirm the latest in counselling.</p>
         </div>
       </div>
     </footer>

@@ -3,8 +3,11 @@
 import { useEffect, useRef } from "react";
 import { motion, useMotionValue, useScroll, useSpring, useTransform } from "framer-motion";
 import { ArrowRight } from "lucide-react";
-import { SectionHeading } from "@/components/ui/section-heading";
+import { Eyebrow, SectionHeading } from "@/components/ui/section-heading";
+import { Reveal, Words } from "@/components/ui/reveal";
 import { destinations, whatsappLink, type Destination } from "@/lib/site";
+
+const INTRO = "We guide students to universities across the globe. Here are the countries families ask us about most.";
 
 /**
  * On large screens the section pins and the country cards glide sideways as
@@ -30,17 +33,19 @@ export function Destinations() {
 
   return (
     <section id="destinations" aria-labelledby="dest-heading" className="relative">
-      {/* Desktop: pinned horizontal track */}
-      <div ref={ref} className="relative hidden h-[300vh] lg:block">
-        <div className="sticky top-0 flex h-screen flex-col justify-center overflow-hidden">
+      {/* Desktop with enough height: pinned horizontal track */}
+      <div ref={ref} className="relative hidden h-[300vh] lg:[@media(min-height:40rem)]:block">
+        <div className="sticky top-0 flex h-screen flex-col justify-center overflow-hidden pb-6 pt-24">
           <div className="wrap flex items-end justify-between gap-10">
-            <SectionHeading
-              id="dest-heading"
-              eyebrow="Destinations"
-              title="Where in the world"
-              accent="will you study?"
-              intro="We guide students to universities across the globe. Here are the countries families ask us about most."
-            />
+            <div className="max-w-2xl">
+              <Reveal className="[@media(max-height:46rem)]:hidden">
+                <Eyebrow>Destinations</Eyebrow>
+              </Reveal>
+              <h2 id="dest-heading" className="display mt-4 [@media(max-height:46rem)]:mt-0 text-[clamp(2.2rem,3.8vw,3.4rem)] leading-[1.04]">
+                <Words text="Where in the world" accent="will you study?" />
+              </h2>
+              <p className="mt-3 max-w-xl text-fg/65 [@media(max-height:46rem)]:hidden">{INTRO}</p>
+            </div>
             <div className="mb-3 w-56 shrink-0">
               <div className="h-px w-full bg-fg/15">
                 <motion.div className="h-px origin-left bg-gold" style={{ scaleX: bar }} />
@@ -49,7 +54,7 @@ export function Destinations() {
             </div>
           </div>
 
-          <motion.div ref={track} style={{ x }} className="mt-14 flex w-max gap-6 pl-[max(2rem,calc((100vw-80rem)/2+2rem))]">
+          <motion.div ref={track} style={{ x }} className="mt-[min(3rem,5vh)] flex w-max gap-6 pl-[max(2rem,calc((100vw-80rem)/2+2rem))]">
             {destinations.map((d, i) => (
               <Card key={d.code} d={d} i={i} />
             ))}
@@ -58,13 +63,13 @@ export function Destinations() {
       </div>
 
       {/* Phones and tablets: swipe */}
-      <div className="py-24 sm:py-32 lg:hidden">
+      <div className="py-24 sm:py-32 lg:[@media(min-height:40rem)]:hidden">
         <div className="wrap">
           <SectionHeading
             eyebrow="Destinations"
             title="Where in the world"
             accent="will you study?"
-            intro="We guide students to universities across the globe. Here are the countries families ask us about most."
+            intro={INTRO}
           />
         </div>
         <div className="mt-12 flex snap-x snap-mandatory gap-4 overflow-x-auto px-5 pb-4 [scrollbar-width:none] sm:px-8">
@@ -81,7 +86,7 @@ export function Destinations() {
 
 function Card({ d, i }: { d: Destination; i: number }) {
   return (
-    <article className="group relative flex h-[27rem] w-[19rem] shrink-0 flex-col overflow-hidden rounded-[2rem] border border-fg/10 bg-surface p-7 shadow-card transition-[transform,box-shadow] duration-700 ease-out-expo hover:-translate-y-2 hover:shadow-lift sm:w-[22rem]">
+    <article className="group relative flex h-[min(27rem,calc(100vh-17rem))] min-h-[23rem] w-[19rem] shrink-0 flex-col overflow-hidden rounded-[2rem] border border-fg/10 bg-surface p-7 shadow-card transition-[transform,box-shadow] duration-700 ease-out-expo hover:-translate-y-2 hover:shadow-lift sm:w-[22rem]">
       {/* Colour wash in the country's hue */}
       <div
         aria-hidden
