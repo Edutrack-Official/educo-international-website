@@ -451,6 +451,21 @@
   animation: border-spin 5s linear infinite;
 }
 
+/* Letters drifting up through the hero sky */
+@keyframes glyph-rise {
+  0% { transform: translateY(2rem) rotate(-6deg); opacity: 0; }
+  12% { opacity: var(--o, 0.15); }
+  85% { opacity: var(--o, 0.15); }
+  100% { transform: translateY(-105svh) rotate(8deg); opacity: 0; }
+}
+.glyph {
+  opacity: 0;
+  white-space: nowrap;
+  animation: glyph-rise var(--t, 20s) linear infinite;
+  animation-delay: var(--d, 0s);
+  will-change: transform;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -461,7 +476,7 @@
     transition-duration: 0.001ms !important;
     scroll-behavior: auto !important;
   }
-  .curtain { display: none; }
+  .curtain, .glyph { display: none; }
   .write, .trace, .write-text { stroke-dashoffset: 0 !important; opacity: 1 !important; }
   .write-text { fill: var(--gold); }
 }

@@ -24,17 +24,17 @@ export function Hero() {
   }, []);
 
   return (
-    <section id="top" className="island grain relative isolate flex min-h-[100svh] flex-col overflow-hidden pt-28 sm:pt-32">
+    <section id="top" className="island grain relative isolate flex min-h-[100svh] flex-col overflow-hidden pt-24 sm:pt-32">
       <Sky />
 
-      <div className="wrap relative grid flex-1 items-center gap-12 pb-10 lg:grid-cols-[1fr_1.05fr] lg:gap-4">
-        <div>
-          <p className="enter inline-flex items-center gap-3 text-xs font-bold uppercase tracking-[0.3em] text-gold" style={{ "--d": `${T}s` } as React.CSSProperties}>
-            <span className="h-px w-10 bg-gold" />
+      <div className="wrap relative grid flex-1 items-center gap-4 pb-10 sm:gap-10 lg:grid-cols-[1fr_1.05fr] lg:gap-4">
+        <div className="text-center lg:text-left">
+          <p className="enter inline-flex items-center gap-3 text-[0.65rem] font-bold uppercase tracking-[0.26em] text-gold sm:text-xs sm:tracking-[0.3em]" style={{ "--d": `${T}s` } as React.CSSProperties}>
+            <span className="hidden h-px w-10 bg-gold lg:block" />
             Educo International · {site.address.short}
           </p>
 
-          <h1 className="display mt-6 text-[clamp(3.2rem,8.2vw,7rem)] leading-[0.94]">
+          <h1 className="display mt-4 text-[clamp(2.9rem,8.2vw,7rem)] leading-[0.94] sm:mt-6">
             <span className="word-mask">
               <span className="word" style={{ "--d": `${T + 0.1}s` } as React.CSSProperties}>
                 Achieving
@@ -53,9 +53,9 @@ export function Hero() {
             </span>
           </h1>
 
-          <div className="enter mt-7 flex flex-wrap items-center gap-3 text-xl" style={{ "--d": `${T + 0.45}s` } as React.CSSProperties}>
+          <div className="enter mt-5 flex flex-wrap items-center justify-center gap-2.5 text-lg sm:mt-7 sm:gap-3 sm:text-xl lg:justify-start" style={{ "--d": `${T + 0.45}s` } as React.CSSProperties}>
             <span className="text-fg/60">Learn</span>
-            <span className="relative inline-flex h-11 min-w-[12rem] items-center overflow-hidden rounded-full border border-gold/40 bg-gold/10 px-5">
+            <span className="relative inline-flex h-11 min-w-[11.5rem] items-center justify-center overflow-hidden rounded-full border border-gold/40 bg-gold/10 px-5 lg:justify-start">
               <AnimatePresence mode="popLayout" initial={false}>
                 <motion.span
                   key={SUBJECTS[k]}
@@ -72,12 +72,12 @@ export function Hero() {
             <span className="text-fg/60">with us.</span>
           </div>
 
-          <p className="enter mt-6 max-w-xl text-lg leading-relaxed text-fg/65" style={{ "--d": `${T + 0.55}s` } as React.CSSProperties}>
+          <p className="enter mt-6 hidden max-w-xl text-lg leading-relaxed text-fg/65 sm:block lg:mx-0 sm:mx-auto" style={{ "--d": `${T + 0.55}s` } as React.CSSProperties}>
             Coaching for IELTS, OET, TOEFL, GRE and GMAT. Spoken English and Hindi for every age. Phonics, handwriting,
             summer camps and workshops for kids. And guidance all the way to a university abroad.
           </p>
 
-          <div className="enter mt-9 flex flex-wrap gap-3" style={{ "--d": `${T + 0.65}s` } as React.CSSProperties}>
+          <div className="enter mt-7 flex flex-wrap justify-center gap-3 sm:mt-9 lg:justify-start" style={{ "--d": `${T + 0.65}s` } as React.CSSProperties}>
             <Magnetic>
               <Button href={whatsappLink("Hi Educo, I'd like to book a demo / counselling session.")}>
                 <CalendarCheck className="h-4 w-4" aria-hidden />
@@ -92,7 +92,7 @@ export function Hero() {
             </Magnetic>
           </div>
 
-          <div className="enter mt-10 flex flex-wrap items-center gap-3" style={{ "--d": `${T + 0.8}s` } as React.CSSProperties}>
+          <div className="enter mt-8 flex flex-wrap items-center justify-center gap-3 sm:mt-10 lg:justify-start" style={{ "--d": `${T + 0.8}s` } as React.CSSProperties}>
             <a
               href={reviewsLink}
               target="_blank"
@@ -120,7 +120,7 @@ export function Hero() {
           </div>
         </div>
 
-        <div className="enter-fade relative mx-auto w-full max-w-[38rem]" style={{ "--d": `${T - 0.2}s` } as React.CSSProperties}>
+        <div className="enter-fade relative order-first mx-auto w-full max-w-[25rem] sm:max-w-[32rem] lg:order-none lg:max-w-[38rem]" style={{ "--d": `${T - 0.2}s` } as React.CSSProperties}>
           <Notebook />
         </div>
       </div>
@@ -159,12 +159,32 @@ const STARS = Array.from({ length: 60 }, (_, i) => ({
   t: 3 + (i % 5),
 }));
 
+/** Letters from English and Hindi drifting up through the sky. */
+const GLYPH_SET = ["A", "अ", "b", "Aa", "ए", "?", "C", "क", "z", "!", "IELTS", "Hello", "नमस्ते", "8.0", "abc"];
+const GLYPHS = GLYPH_SET.map((ch, i) => ({
+  ch,
+  x: r(4 + ((i * 61) % 92)),
+  size: r(ch.length > 3 ? 1.1 : 1.6 + (i % 4) * 0.7),
+  t: 16 + (i % 5) * 4,
+  d: r(i * 2.3),
+  o: r(0.08 + (i % 3) * 0.045),
+}));
+
 function Sky() {
   return (
     <div aria-hidden className="absolute inset-0 -z-10">
       <div className="drift absolute -left-40 top-10 h-[34rem] w-[34rem] rounded-full bg-[#2a3fa8]/45 blur-[120px]" />
       <div className="drift absolute -right-32 bottom-0 h-[30rem] w-[30rem] rounded-full bg-gold/20 blur-[130px]" style={{ "--d": "-6s" } as React.CSSProperties} />
       <div className="bg-grid mask-fade absolute inset-0 opacity-40" />
+      {GLYPHS.map((g, i) => (
+        <span
+          key={`g-${i}`}
+          className="glyph display absolute bottom-0 italic text-gold"
+          style={{ left: `${g.x}%`, fontSize: `${g.size}rem`, "--t": `${g.t}s`, "--d": `${-g.d}s`, "--o": g.o } as React.CSSProperties}
+        >
+          {g.ch}
+        </span>
+      ))}
       {STARS.map((s, i) => (
         <span
           key={i}
@@ -189,10 +209,10 @@ const CARDS = [
 
 /** Chips that orbit the notebook. Positions are % of the stage. */
 const CHIPS = [
-  { label: "IELTS", x: 6, y: 14, d: 0 },
-  { label: "OET", x: 84, y: 6, d: 0.8 },
-  { label: "Spoken English", x: 74, y: 88, d: 1.6 },
-  { label: "Spoken Hindi", x: 2, y: 70, d: 0.4 },
+  { label: "IELTS", x: 6, y: 14, mx: 0, my: 8, d: 0 },
+  { label: "OET", x: 84, y: 6, mx: 80, my: 6, d: 0.8 },
+  { label: "Spoken English", x: 74, y: 88, mx: 54, my: 90, d: 1.6 },
+  { label: "Spoken Hindi", x: 2, y: 70, mx: 0, my: 74, d: 0.4 },
   { label: "Phonics", x: 90, y: 50, d: 1.2 },
   { label: "GRE · GMAT", x: 40, y: 1, d: 2 },
   { label: "Summer camp ☀", x: 22, y: 92, d: 2.4 },
@@ -352,8 +372,8 @@ function Notebook() {
       {CHIPS.map((ch, i) => (
         <span
           key={ch.label}
-          className="enter absolute"
-          style={{ left: `${ch.x}%`, top: `${ch.y}%`, "--d": `${T + 0.5 + i * 0.1}s` } as React.CSSProperties}
+          className={`enter absolute left-[var(--mx)] top-[var(--my)] sm:left-[var(--x)] sm:top-[var(--y)] ${ch.mx === undefined ? "hidden sm:block" : ""}`}
+          style={{ "--x": `${ch.x}%`, "--y": `${ch.y}%`, "--mx": `${ch.mx ?? ch.x}%`, "--my": `${ch.my ?? ch.y}%`, "--d": `${T + 0.5 + i * 0.1}s` } as React.CSSProperties}
         >
           <span
             className="float block whitespace-nowrap rounded-full border border-gold/35 bg-[#0c1230]/85 px-3 py-1.5 text-[0.65rem] font-bold uppercase tracking-[0.14em] text-[#f6e3b0] shadow-lg backdrop-blur sm:text-xs"
